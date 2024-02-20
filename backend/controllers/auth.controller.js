@@ -1,18 +1,24 @@
-import User from "../models/user.models";
+import User from "../models/user.model.js";
+import bcrypt from "bcryptjs";
 
 export const signup = async (req, res) => {
     try{
+        
         const {fullName, username, password, confirmPassword, gender} = req.body;
 
         if(password !== confirmPassword){
-            return res.status(400).json({message: "Password do not match"});
+            return res.status(400).json({error: "Password do not match"});
         }
 
         const user = await User.findOne({username});
 
+
         if(user){
-            return res.status(400).json({message: "User already exists"});
+            return res.status(400).json({error: "User already exists"});
         }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`
         const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`
@@ -20,9 +26,9 @@ export const signup = async (req, res) => {
         const newUser = new User({
             fullName,
             username,
-            password,
+            password: hashedPassword,
             gender,
-            profilePic: gender === "male" ? boyProfilePic : girlProfilePic
+            profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
         })
 
         await newUser.save();
@@ -31,7 +37,7 @@ export const signup = async (req, res) => {
             _id: newUser._id,
             fullName: newUser.fullName,
             username: newUser.username,
-            profilePic: newUser.profilePic
+            profilePic: newUser.profilePic,
         })
 
 
@@ -44,11 +50,11 @@ export const signup = async (req, res) => {
     }
 }
 
-export const login = (req, res) => {
+export const login = () => {
     console.log("loginUser");
 }
 
-export const logout = (req, res) => {
+export const logout = () => {
     console.log("logoutUser");
 }
 
