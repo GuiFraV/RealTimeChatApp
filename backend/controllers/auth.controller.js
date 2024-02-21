@@ -76,15 +76,22 @@ export const login = async(req, res) => {
             profilePic: user.profilePic,
         });
 
-        
+
     } catch (error) {
         console.log("Error in login controller", error.message);
-        res.status(500).json({error:"Internal Server Error"})
+        res.status(500).json({error:"Internal Server Error"});
     }
 }
 
-export const logout = () => {
-    console.log("logoutUser");
+export const logout = (req, res) => {
+    try {
+        res.cookie("jwt","", {maxAge:0});
+        res.status(200).json({message:"Logged out succesfully"});
+        
+    } catch (error) {
+        console.log("Error in logout controller", error.message);
+        res.status(500).json({error:"Internal Server Error"});
+    }
 }
 
 
