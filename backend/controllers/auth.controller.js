@@ -29,19 +29,25 @@ export const signup = async (req, res) => {
             password: hashedPassword,
             gender,
             profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
-        })
+        });
 
-        await newUser.save();
+        if(newUser){    
 
-        res.status(201).json({ // send data to the client
-            _id: newUser._id,
-            fullName: newUser.fullName,
-            username: newUser.username,
-            profilePic: newUser.profilePic,
-        })
+            
 
+            await newUser.save();
 
-    }catch (error){
+            res.status(201).json({ // send data to the client
+                _id: newUser._id,
+                fullName: newUser.fullName,
+                username: newUser.username,
+                profilePic: newUser.profilePic,
+            });
+        }else{
+            res.send(400).json({error: "Invalid user data"});
+        }
+
+    } catch (error){
 
         console.log("Error in signup controller", error.message);
 
