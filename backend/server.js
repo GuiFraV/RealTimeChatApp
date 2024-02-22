@@ -16,7 +16,7 @@ app.use(express.json()); // middleware to parse json data (payload) in the reque
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/message", messageRoutes);
+app.use("/api/messages", messageRoutes);
 
 
 // app.get("/", (req, res) => {
