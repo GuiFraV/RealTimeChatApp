@@ -1,3 +1,5 @@
+import SearchInput from "./SeachInput"
+
 const Sidebar = () => {
   return (
     <div>
