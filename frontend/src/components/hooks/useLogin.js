@@ -21,6 +21,6 @@ const useLogin = () => {
         }finally{
             setLoading(false)
         }
-}
+}}
 
 export default useLogin
